@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
-  schedule:
-    - cron: '0 */8 * * *'
 
 jobs:
   build:
@@ -18,7 +16,7 @@ jobs:
         uses: victornpb/notion-jam@v0.0.12
         with:
           notion_token: ${{ secrets.NOTION_SECRET }}
-          page_id: 36f1408d6cbb8069acf3e5f89fdc75e5    
+          page_id: "36f1408d6cbb8069acf3e5f89fdc75e5"
           output_dir: public
 
       - name: Deploy to GitHub Pages
