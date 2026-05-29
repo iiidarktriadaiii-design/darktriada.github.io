@@ -1,0 +1,27 @@
+name: Deploy from Notion
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install loconotion
+        run: npm install -g loconotion
+
+      - name: Export Notion to HTML
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_SECRET }}
+        run: loconotion https://www.notion.so/36f1408d6cbb8069acf3e5f89fdc75e5
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
