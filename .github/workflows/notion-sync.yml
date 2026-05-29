@@ -1,11 +1,11 @@
 name: Notion → GitHub Pages
 
 on:
-  workflow_dispatch:           # Можно запускать вручную
+  workflow_dispatch:           # Запуск вручную
   push:
     branches: [ main ]
   schedule:
-    - cron: '0 */8 * * *'      # Каждые 8 часов автоматически
+    - cron: '0 */8 * * *'      # Автоматически каждые 8 часов
 
 jobs:
   build:
@@ -15,10 +15,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Sync from Notion
-        uses: victornpb/notion-jam@v1
+        uses: victornpb/notion-jam@v0.0.12   # ← Исправленная версия
         with:
           notion_token: ${{ secrets.NOTION_SECRET }}
-          page_id: "36f1408d6cbb8069acf3e5f89fdc75e5"          # ←←← Замени на свой!
+          page_id: "36f1408d6cbb8069acf3e5f89fdc75e5"      # ← Обязательно замени!
           output_dir: public
 
       - name: Deploy to GitHub Pages
