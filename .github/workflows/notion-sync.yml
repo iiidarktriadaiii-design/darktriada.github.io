@@ -1,0 +1,28 @@
+name: Notion → GitHub Pages
+
+on:
+  workflow_dispatch:           # Можно запускать вручную
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 */8 * * *'      # Каждые 8 часов автоматически
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync from Notion
+        uses: victornpb/notion-jam@v1
+        with:
+          notion_token: ${{ secrets.NOTION_SECRET }}
+          page_id: "36f1408d6cbb8069acf3e5f89fdc75e5"          # ←←← Замени на свой!
+          output_dir: public
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
