@@ -1,5 +1,4 @@
 name: Deploy from Notion
-
 on:
   workflow_dispatch:
   push:
@@ -8,17 +7,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # убирает предупреждение Node.js
 
     steps:
       - uses: actions/checkout@v4
 
+      # loconotion — Python-инструмент, нужен pip
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # loconotion использует Selenium + Chrome под капотом
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
+
       - name: Install loconotion
-        run: npm install -g loconotion
+        run: pip install loconotion
 
       - name: Export Notion to HTML
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_SECRET }}
-        run: loconotion https://www.notion.so/36f1408d6cbb8069acf3e5f89fdc75e5
+        run: loconotion https://www.notion.so/36f1408d6cbb8069acf3e5f89fdc75e5 --target ./out
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
