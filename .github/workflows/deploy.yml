@@ -8,28 +8,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # убирает предупреждение Node.js
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - uses: actions/checkout@v4
 
-      # loconotion — Python-инструмент, нужен pip
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
-      # loconotion использует Selenium + Chrome под капотом
       - name: Install Chrome
         run: |
           sudo apt-get update
           sudo apt-get install -y chromium-browser
 
       - name: Install loconotion
-        run: pip install loconotion
+        run: pip install git+https://github.com/leoncvlt/loconotion.git
 
       - name: Export Notion to HTML
-        run: loconotion https://www.notion.so/36f1408d6cbb8069acf3e5f89fdc75e5 --target ./out
+        run: loconotion https://www.notion.so/36f1408d6cbb8069acf3e5f89fdc75e5 --target ./out --token ${{ secrets.NOTION_SECRET }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
