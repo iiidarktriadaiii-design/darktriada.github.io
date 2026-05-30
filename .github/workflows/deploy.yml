@@ -27,7 +27,7 @@ jobs:
         run: pip install git+https://github.com/leoncvlt/loconotion.git
 
       - name: Export Notion to HTML
-        run: loconotion https://www.notion.so/36f1408d6cbb8069acf3e5f89fdc75e5 --target ./out --token ${{ secrets.NOTION_SECRET }}
+        run: python -m loconotion https://www.notion.so/36f1408d6cbb8069acf3e5f89fdc75e5 --target ./out --token ${{ secrets.NOTION_SECRET }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
