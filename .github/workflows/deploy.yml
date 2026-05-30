@@ -30,12 +30,11 @@ jobs:
         run: pip install -r loconotion-src/requirements.txt
 
       - name: Export Notion to HTML
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_SECRET }}
-        run: |
-          cd loconotion-src
-          python -m loconotion https://www.notion.so/36f1408d6cbb8069acf3e5f89fdc75e5 --target ../out --token $NOTION_TOKEN
-
+       run: |
+          PYTHONPATH=loconotion-src/loconotion python loconotion-src/loconotion/__main__.py \
+              https://www.notion.so/36f1408d6cbb8069acf3e5f89fdc75e5 \
+              --target ./out
+    
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
